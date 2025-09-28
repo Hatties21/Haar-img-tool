@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Haar Image Tool — 2D Haar Transform</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="row head">
+        <div>
+          <p class="muted">
+            Tải ảnh → chuyển xám → biến đổi Haar 2D (nhiều mức) → ngưỡng hoá →
+            tái tạo → tải xuống.
+          </p>
+        </div>
+      </header>
+
+      <!-- Controls -->
+      <section class="card grid controls-wrap">
+        <div class="grid left-controls">
+          <div class="row gap">
+            <input id="file" type="file" accept="image/*" class="btn ghost" />
+            <button id="btnReset" class="btn ghost" disabled>Reset</button>
+            <button id="btnDownload" class="btn" disabled>
+              Tải ảnh kết quả
+            </button>
+          </div>
+          <div class="row gap">
+            <button id="btnToGray" class="btn" disabled>Chuyển xám</button>
+            <button id="btnForward" class="btn" disabled>Biến đổi Haar</button>
+            <button id="btnInverse" class="btn" disabled>Giải biến đổi</button>
+          </div>
+        </div>
+
+        <div class="grid right-controls">
+          <!-- Levels buttons -->
+          <div class="col">
+            <span class="group-title">Mức biến đổi (levels)</span>
+            <div class="row gap btn-group" id="levelsBtn">
+              <button data-level="1" class="btn ghost small active">1</button>
+              <button data-level="2" class="btn ghost small">2</button>
+              <button data-level="3" class="btn ghost small">3</button>
+              <button data-level="4" class="btn ghost small">4</button>
+              <button data-level="5" class="btn ghost small">5</button>
+            </div>
+          </div>
+
+          <!-- Threshold buttons -->
+          <div class="col">
+            <span class="group-title">Ngưỡng |ε|</span>
+            <div class="row gap btn-group" id="thrBtn">
+              <button data-thr="0" class="btn ghost small active">0</button>
+              <button data-thr="10" class="btn ghost small">10</button>
+              <button data-thr="20" class="btn ghost small">20</button>
+              <button data-thr="40" class="btn ghost small">40</button>
+              <button data-thr="60" class="btn ghost small">60</button>
+            </div>
+          </div>
+
+          <label class="row switch" style="grid-column: span 2">
+            <input id="orthonorm" type="checkbox" checked />
+            <span>Chuẩn hoá trực giao (1/√2)</span>
+          </label>
+
+          <div class="col" style="grid-column: span 2">
+            <span
+              >Kích thước xử lý
+              <small class="muted"
+                >(tự nội suy về lũy thừa 2 ≤ 1024)</small
+              ></span
+            >
+            <div class="row gap btn-group" id="procBtn">
+              <button data-size="Auto" class="btn ghost small active">
+                Auto
+              </button>
+              <button data-size="128" class="btn ghost small">128</button>
+              <button data-size="256" class="btn ghost small">256</button>
+              <button data-size="512" class="btn ghost small">512</button>
+              <button data-size="1024" class="btn ghost small">1024</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Canvases -->
+      <section class="grid canvases">
+        <div class="card col">
+          <div class="row between">
+            <div class="pill">Ảnh gốc / xám</div>
+            <div id="infoSrc" class="muted"></div>
+          </div>
+          <canvas id="src" width="0" height="0"></canvas>
+        </div>
+
+        <div class="card col">
+          <div class="row between">
+            <div class="pill">Phổ hệ số Haar</div>
+            <div id="infoHaar" class="muted"></div>
+          </div>
+          <canvas
+            id="haar"
+            width="0"
+            height="0"
+            title="Vùng trên-trái = xấp xỉ; các ô còn lại = chi tiết ngang/dọc/chéo theo mức."
+          ></canvas>
+        </div>
+
+        <div class="card col">
+          <div class="row between">
+            <div class="pill">Ảnh tái tạo</div>
+            <div id="infoRec" class="muted"></div>
+          </div>
+          <canvas id="rec" width="0" height="0"></canvas>
+        </div>
+
+        <div class="card col">
+          <div class="pill">Thống kê & chỉ số</div>
+          <div id="stats" class="muted"></div>
+        </div>
+      </section>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
